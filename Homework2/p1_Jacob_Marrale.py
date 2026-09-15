@@ -1,5 +1,6 @@
 # homework 2
 
+# question 1a function: line_number
 def line_number(read_file: str , write_file: str) -> str: # read first file , write its line prefixed with line numbers for second
     try:
         with open(read_file, 'r') as file1:
@@ -11,8 +12,11 @@ def line_number(read_file: str , write_file: str) -> str: # read first file , wr
     except Exception as e:
         print(f"Function Failure: {e}")
         raise
+
 def main():
 
+    # question 1a test:
+    line_number(__file__, __file__ + '.txt')
 
 
 if __name__ == "__main__":
