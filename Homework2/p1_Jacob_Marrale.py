@@ -22,19 +22,24 @@ def parse_functions(parse_file: str) -> tuple: # read file, find functions, make
         with open(parse_file, 'r') as parse:
             lines = parse.readlines()
         for i, line in enumerate(lines, start=1):
-            if 'def' in line: # doesn't account for comments containing def but didn't say to account for that in the question
-                func_line_num = i
-                func_name = line.split("def ")[1].split("(")[0].strip() # makes two lists, first one to split and get the right side then second to get the left side, then stripe to get rid of spaces
-                func_para = line.split("(")[1].split(")")[0].strip() # same trick for parameters in the function
-                # get the whole function into a string
-                func_code = ''
-                for line in lines[i:]:
-                    if line.startswith(' ') or func_name in line:
-                        func_code += line
-                    else: 
-                        break
-                this_tuple = (func_line_num, func_name, func_para, func_code)
-                hold_tuples.append(this_tuple)
+            if not line.startswith('def '): 
+                continue
+            func_line_num = i
+            func_name = line.split("def ")[1].split("(")[0].strip() # makes two lists, first one to split and get the right side then second to get the left side, then stripe to get rid of spaces
+            func_para = line.split("(")[1].split(")")[0].strip() # same trick for parameters in the function
+            # get the whole function into a string
+            def_line = line.split('#')[0].rstrip()
+            func_code = [def_line + '\n']
+            for body_line in lines[i:]:
+                code = body_line.split('#')[0].rstrip()
+                if not code:
+                    continue
+                if not code.startswith((' ', '\t')):
+                    break
+                func_code.append(code + '\n')
+
+            this_tuple = (func_line_num, func_name, func_para, ''.join(func_code))
+            hold_tuples.append(this_tuple)
 
         print("Jacob Marrale , 23779685")        
         print(tuple(sorted(hold_tuples, key=lambda x: x[1])))
@@ -50,7 +55,7 @@ def parse_functions(parse_file: str) -> tuple: # read file, find functions, make
 def main():
 
     # question 1a test:
-    # line_number(__file__, __file__ + '.txt')
+    line_number(__file__, __file__ + '.txt')
 
     # question 1b test:
     test_path = os.path.join(os.path.dirname(__file__), 'funs.py')
