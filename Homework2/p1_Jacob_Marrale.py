@@ -8,7 +8,7 @@ def line_number(read_file: str , write_file: str) -> str: # read first file , wr
         with open(write_file, 'w') as file2:
             for i, line in enumerate(lines, start=1):
                 file2.write(f"{i}: {line}")
-            #    print(f"{i}: {line}") # track if I did it right
+                print(f"{i}: {line}") # track if I did it right
     except Exception as e:
         print(f"Function Failure: {e}")
         raise

@@ -1,0 +1,66 @@
+1: # homework 2
+2: import os # I see no other way to test 1b
+3: # question 1a function: line_number
+4: def line_number(read_file: str , write_file: str) -> str: # read first file , write its line prefixed with line numbers for second
+5:     try:
+6:         with open(read_file, 'r') as file1:
+7:             lines = file1.readlines() # would use generator here but question didn't require it so just gonna load it all at once
+8:         with open(write_file, 'w') as file2:
+9:             for i, line in enumerate(lines, start=1):
+10:                 file2.write(f"{i}: {line}")
+11:                 print(f"{i}: {line}") # track if I did it right
+12:     except Exception as e:
+13:         print(f"Function Failure: {e}")
+14:         raise
+15: 
+16: # question 1b function: parse_functions:
+17: def parse_functions(parse_file: str) -> tuple: # read file, find functions, make nested tuples ex: ((9, "mul", 'x,y', 'def mul(x,y):\n\tz = x * y\n\treturn z\n')) , comments and empty lines gone
+18:     # tuples must be ordered alphabetically based on function name
+19: 
+20:     try: 
+21:         hold_tuples = []
+22:         with open(parse_file, 'r') as parse:
+23:             lines = parse.readlines()
+24:         for i, line in enumerate(lines, start=1):
+25:             if not line.startswith('def '): 
+26:                 continue
+27:             func_line_num = i
+28:             func_name = line.split("def ")[1].split("(")[0].strip() # makes two lists, first one to split and get the right side then second to get the left side, then stripe to get rid of spaces
+29:             func_para = line.split("(")[1].split(")")[0].strip() # same trick for parameters in the function
+30:             # get the whole function into a string
+31:             def_line = line.split('#')[0].rstrip()
+32:             func_code = [def_line + '\n']
+33:             for body_line in lines[i:]:
+34:                 code = body_line.split('#')[0].rstrip()
+35:                 if not code:
+36:                     continue
+37:                 if not code.startswith((' ', '\t')):
+38:                     break
+39:                 func_code.append(code + '\n')
+40: 
+41:             this_tuple = (func_line_num, func_name, func_para, ''.join(func_code))
+42:             hold_tuples.append(this_tuple)
+43: 
+44:         print("Jacob Marrale , 23779685")        
+45:         print(tuple(sorted(hold_tuples, key=lambda x: x[1])))
+46:         return tuple(sorted(hold_tuples, key=lambda x: x[1]))
+47:                         
+48: 
+49:                     
+50:         
+51:     except Exception as e:
+52:         print(f"Function Failure: {e}")
+53:         raise
+54: 
+55: def main():
+56: 
+57:     # question 1a test:
+58:     line_number(__file__, __file__ + '.txt')
+59: 
+60:     # question 1b test:
+61:     test_path = os.path.join(os.path.dirname(__file__), 'funs.py')
+62:     parse_functions(test_path)
+63: 
+64: 
+65: if __name__ == "__main__":
+66:     main()
