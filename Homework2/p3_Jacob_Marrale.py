@@ -135,6 +135,7 @@ def main():
     loaded = load_network(path)
     print(loaded)
 
+    print("Jacob Marrale , 23779685")
 
 if __name__ == "__main__":
     main()
